@@ -79,6 +79,7 @@ const onDataSubmit=async (data)=>{
                 </div>
                 <div className="mt-2">
                   <input
+                  type="password"
                     id="password"
                     {...register('password',{required:true})}
                     required
