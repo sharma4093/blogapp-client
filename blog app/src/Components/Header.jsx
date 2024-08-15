@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import  { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
@@ -25,7 +26,7 @@ const Header = () => {
   };
 
   const handlePostBlogClick = () => {
-    if(!isLoggedIn){
+    if(!user){
       alert("please Login first");
       return
     }
