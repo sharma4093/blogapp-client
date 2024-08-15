@@ -1,34 +1,27 @@
-/* eslint-disable no-unused-vars */
-import  { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
 
-import Modal from './modal';
-import CreateBlog from './createBlog';
+import { useState } from "react";
+import { useNavigate, NavLink } from "react-router-dom";
+import Modal from "./modal";
+import CreateBlog from "./createBlog";
+import useAuth from "../hook/useAuth";
 
 const Header = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
-  const user   = localStorage.getItem('token');
-
-  useEffect(() => {
-    if (user) {
-      setIsLoggedIn(user);
-    }
-  }, []);
+  const { user } = useAuth();
 
   const handleLogout = () => {
-    alert('logged out');
-    console.log('loggedout');
+    alert("logged out");
+    console.log("loggedout");
     localStorage.clear();
-    setIsLoggedIn(null);
-    navigate('/login');
+    navigate("/");
+    window.location.reload();
   };
 
   const handlePostBlogClick = () => {
-    if(!user){
+    if (!user) {
       alert("please Login first");
-      return
+      return;
     }
     setIsModalOpen(true);
   };
@@ -38,51 +31,56 @@ const Header = () => {
   };
 
   return (
-    <div>
+    <>
       <header className="bg-blue-600 text-white shadow-lg p-4 fixed w-full z-20">
         <nav className="flex justify-between">
           <div className="w-full">
             {user ? (
               <div className="text-right gap-3">
-              <Link to="/" className="hover:text-gray-200 px-3">
-                  Home
-                </Link>
-                <Link to="/profile" className="hover:text-gray-200 px-3">
-                  Profile
-                </Link>
-                <button
-                  className="hover:text-gray-200 px-3"
-                  onClick={handlePostBlogClick}
+                <NavLink
+                  to="/"
+                  className={({ isActive }) =>
+                    isActive ? "underline px-3" : "hover:text-gray-200 px-3"
+                  }
                 >
+                  Home
+                </NavLink>
+                <button className="hover:text-gray-200 px-3" onClick={handlePostBlogClick}>
                   Post Blog
                 </button>
-                <Link to="/myblogs" className="hover:text-gray-200 px-3">
-                  My Blogs
-                </Link>
-                <button
-                  className="hover:text-gray-200 px-3"
-                  onClick={handleLogout}
+                <NavLink
+                  to="/myblogs"
+                  className={({ isActive }) =>
+                    isActive ? "underline px-3" : "hover:text-gray-200 px-3"
+                  }
                 >
+                  My Blogs
+                </NavLink>
+                <button className="hover:text-gray-200 px-3" onClick={handleLogout}>
                   Logout
                 </button>
               </div>
             ) : (
-              <div className="text-right gap-3"> 
-              <Link to="/" className="hover:text-gray-200 px-3">
-                  Home
-                </Link>
-                <button
-                  className="hover:text-gray-200 px-3"
-                  onClick={handlePostBlogClick}
+              <div className="text-right gap-3">
+                <NavLink
+                  to="/"
+                  className={({ isActive }) =>
+                    isActive ? "underline px-3" : "hover:text-gray-200 px-3"
+                  }
                 >
+                  Home
+                </NavLink>
+                <button className="hover:text-gray-200 px-3" onClick={handlePostBlogClick}>
                   Post Blog
                 </button>
-                <Link
+                <NavLink
                   to="/login"
-                  className="hover:text-gray-200 px-3 border-white bg-white text-black rounded-md pb-2"
+                  className={({ isActive }) =>
+                    isActive ? "underline px-3 border-white bg-white text-black rounded-md pb-2" : "hover:text-gray-200 px-3 border-white bg-white text-black rounded-md pb-2"
+                  }
                 >
                   Login
-                </Link>
+                </NavLink>
               </div>
             )}
           </div>
@@ -90,10 +88,11 @@ const Header = () => {
       </header>
 
       <Modal isVisible={isModalOpen} onClose={closeModal}>
-        <CreateBlog/>
+        <CreateBlog onClose={closeModal} />
       </Modal>
-    </div>
+    </>
   );
 };
 
 export default Header;
+

@@ -1,9 +1,33 @@
 /* eslint-disable no-unused-vars */
 
 import React from "react";
+import axiosInstance from "../axios";
+import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 
+
+
 export default function Signup() {
+
+const {register,handleSubmit}=useForm();
+
+const onDataSubmit=async (data)=>{
+  try {
+    console.log(data)
+    const response =  await axiosInstance.post('/user/signup',data);
+    alert('successfully registerd')
+    console.log(response)
+  } catch (error){
+     if (error.response && error.response.data && error.response.data.message) {
+    alert(error.response.data.message);
+  } else {
+    alert('An error occurred. Please try again.');
+  }
+  console.error(error);
+}
+}
+
+
     return (
       <>
         <div className="flex min-h-full flex-1 flex-col justify-center px-6 pt-12 lg:px-8">
@@ -19,7 +43,7 @@ export default function Signup() {
           </div>
   
           <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <form action="#" method="POST" className="space-y-6">
+            <form onSubmit={handleSubmit(onDataSubmit)} className="space-y-6">
               <div>
                 <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
                   Name
@@ -27,7 +51,7 @@ export default function Signup() {
                 <div className="mt-2">
                   <input
                     id="name"
-                    name="name"
+                    {...register('name',{required:true})}
                     type="text"
                     className="block w-full rounded-md px-3 border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
@@ -40,9 +64,8 @@ export default function Signup() {
                 <div className="mt-2">
                   <input
                     id="email"
-                    name="email"
+                    {...register('email',{required:true})}
                     type="email"
-                    required
                     className="block w-full rounded-md px-3 border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
@@ -57,7 +80,7 @@ export default function Signup() {
                 <div className="mt-2">
                   <input
                     id="password"
-                    name="password"
+                    {...register('password',{required:true})}
                     required
                     className="block w-full px-3 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
@@ -74,7 +97,7 @@ export default function Signup() {
                   <input
                     id="Cpassword"
                     type="password"
-                    required
+                    {...register('confirmPassword',{required:true})}
                     className="block w-full px-3 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>

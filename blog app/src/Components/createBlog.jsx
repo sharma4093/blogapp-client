@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 // /* eslint-disable no-unused-vars */
 // import React from 'react'
@@ -47,25 +48,21 @@
 
 // export default CreateBlog;
 
-import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import axiosInstance from '../axios';
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import axiosInstance from "../axios";
+import useSWR, { mutate } from "swr";
 
-const CreateBlog = () => {
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-
-  const {register,handleSubmit}  = useForm();
-  const clickSubmit =async (data) => {
+const CreateBlog = ({ onClose }) => {
+  const { register, handleSubmit } = useForm();
+  const clickSubmit = async (data) => {
     try {
-        console.log(data);
-        const blog = await axiosInstance.post('/blog/create',data);
-        
-        console.log(blog);
+      console.log(data);
+      const blog = await axiosInstance.post("/blog/create", data);
+      mutate("/blog/user");
+      onClose();
     } catch (error) {
-        alert(error);
-
-
+      alert(error);
     }
   };
 
@@ -78,7 +75,7 @@ const CreateBlog = () => {
         <input
           type="text"
           id="title"
-         {...register('BlogName',{required:true})}
+          {...register("BlogName", { required: true })}
           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
         />
       </div>
@@ -88,7 +85,7 @@ const CreateBlog = () => {
         </label>
         <textarea
           id="content"
-          {...register('content',{required:true})}
+          {...register("content", { required: true })}
           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
         />
       </div>

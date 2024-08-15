@@ -6,13 +6,11 @@ import axiosInstance from '../axios';
 
 const Home = () => {
   const [blogs,setBlogs] = useState([]);
-  const [user,setUser] = useState({});
+
   const fetchBlogs= async()=>{
     try {
       const response = await axiosInstance.get('/blog/');
       setBlogs(response.data.data);
-      setUser(response.data.data)
-      console.log(response.data.data);
     } catch (error) {
       console.log(error);
     }
