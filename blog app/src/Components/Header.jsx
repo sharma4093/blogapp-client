@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
 import Modal from './modal';
@@ -21,7 +21,7 @@ const Header = () => {
     console.log('loggedout');
     localStorage.clear();
     setIsLoggedIn(null);
-    navigate('/');
+    navigate('/login');
   };
 
   const handlePostBlogClick = () => {
@@ -41,7 +41,7 @@ const Header = () => {
       <header className="bg-blue-600 text-white shadow-lg p-4 fixed w-full z-20">
         <nav className="flex justify-between">
           <div className="w-full">
-            {isLoggedIn ? (
+            {user ? (
               <div className="text-right gap-3">
               <Link to="/" className="hover:text-gray-200 px-3">
                   Home
